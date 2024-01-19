@@ -1,4 +1,4 @@
-# README for linkshrink-terraform
+# linkshrink-terraform
 
 ## Overview
 `linkshrink-terraform` is a Terraform project for provisioning and deploying the LinkShrink Web App and its backend API on Google Cloud Platform (GCP). This project uses Terraform Cloud for remote state management and follows the principle of one project per environment in GCP.
