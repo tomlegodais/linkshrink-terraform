@@ -78,6 +78,3 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
-# GCP Infra Credentials
-gcp-tf-infra-operator-key.json
