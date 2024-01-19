@@ -13,20 +13,23 @@ terraform {
       version = "~>3"
     }
   }
-  backend "gcs" {
-    bucket  = "linkshrink-terraform-state"
-    prefix  = "terraform/state"
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "linkshrink"
+    workspaces {
+      prefix = "linkshrink-"
+    }
   }
 }
 
 provider "google" {
   credentials = local.provider_config.gcp.credentials
-  project     = var.project_id
-  region      = var.region
+  project     = local.provider_config.gcp.project
+  region      = local.provider_config.gcp.region
 }
 
 provider "google-beta" {
   credentials = local.provider_config.gcp.credentials
-  project     = var.project_id
-  region      = var.region
+  project     = local.provider_config.gcp.project
+  region      = local.provider_config.gcp.region
 }

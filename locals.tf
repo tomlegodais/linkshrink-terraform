@@ -1,7 +1,7 @@
 locals {
   provider_config = {
     gcp = {
-      credentials = file("env/${var.environment}/gcp-tf-infra-operator-key.json")
+      credentials = var.gcp_tf_infra_operator_key
       project     = var.project_id
       region      = var.region
     }

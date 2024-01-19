@@ -27,3 +27,9 @@ variable "vpc_connector_cidr" {
   description = "The CIDR for the VPC connector"
   type        = string
 }
+
+variable "gcp_tf_infra_operator_key" {
+  description = "The GCP service account key for the Terraform infra operator"
+  type        = string
+  sensitive   = true
+}
