@@ -1,5 +1,18 @@
 # linkshrink-terraform
 
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Configuration Steps](#configuration-steps)
+  - [Terraform Cloud Setup](#1-terraform-cloud-setup)
+  - [Workspace Creation](#2-workspace-creation)
+  - [GCP Service Account](#3-gcp-service-account)
+  - [Terraform Cloud Configuration](#4-terraform-cloud-configuration)
+  - [Terraform Configuration](#5-terraform-configuration)
+  - [Initialization and Deployment](#6-initialization-and-deployment)
+  - [Workspace Switching](#7-workspace-switching)
+- [Usage](#usage)
+- [Contribution](#contribution)
+
 ## Overview
 `linkshrink-terraform` is a Terraform project for provisioning and deploying the LinkShrink Web App and its backend API on Google Cloud Platform (GCP). This project uses Terraform Cloud for remote state management and follows the principle of one project per environment in GCP.
 
