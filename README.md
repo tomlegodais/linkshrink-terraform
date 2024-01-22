@@ -51,6 +51,7 @@ For each workspace in Terraform Cloud, set the following variables:
 - `project_id`: The GCP project ID (e.g., `linkshrink-prod`)
 - `region`: The GCP region for resource deployment (e.g., `us-east1`)
 - `service_version`: The version of the Docker image `linkshrink-service` to deploy (e.g., `v1.0.0`)
+- `web_app_version`: The version of the Docker image `linkshrink-web-app` to deploy (e.g., `v1.0.0`)
 - `subnet_cidr`: CIDR for the VPC Subnet (e.g., `10.0.0.0/24`)
 - `vpc_connector_cidr`: CIDR for the VPC Connector (e.g., `10.0.1.0/28`)
 
