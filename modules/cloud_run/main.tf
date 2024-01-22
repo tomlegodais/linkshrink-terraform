@@ -1,11 +1,11 @@
 resource "google_cloud_run_v2_job" "migration_job" {
-  name     = "${var.name}-migration-${var.environment}"
+  name     = "${var.name}-service-migration-${var.environment}"
   location = var.region
   project  = var.project_id
   template {
     template {
       containers {
-        image   = var.dockerimage
+        image   = var.service_dockerimage
         command = ["sh", "-c", "alembic upgrade head"]
         env {
           name  = "POSTGRES_URL"
@@ -21,7 +21,7 @@ resource "google_cloud_run_v2_job" "migration_job" {
 }
 
 resource "google_cloud_run_v2_service" "deployment" {
-  name     = "${var.name}-${var.environment}"
+  name     = "${var.name}-service-${var.environment}"
   location = var.region
   project  = var.project_id
   template {
@@ -30,7 +30,7 @@ resource "google_cloud_run_v2_service" "deployment" {
       max_instance_count = 2
     }
     containers {
-      image = var.dockerimage
+      image = var.service_dockerimage
       ports {
         container_port = 8000
       }
@@ -67,4 +67,50 @@ resource "google_cloud_run_v2_service_iam_policy" "noauth" {
     ]
   })
   depends_on = [google_cloud_run_v2_service.deployment]
+}
+
+resource "google_cloud_run_v2_service" "web_deployment" {
+  name     = "${var.name}-web-${var.environment}"
+  location = var.region
+  project  = var.project_id
+  template {
+    scaling {
+      min_instance_count = 0
+      max_instance_count = 2
+    }
+    containers {
+      image = var.web_app_dockerimage
+      ports {
+        container_port = 3000
+      }
+      env {
+        name  = "API_BASE_URL"
+        value = google_cloud_run_v2_service.deployment.uri
+      }
+    }
+    vpc_access {
+      connector = var.vpc_connector
+      egress    = "ALL_TRAFFIC"
+    }
+  }
+  traffic {
+    percent = 100
+    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+  }
+  depends_on = [google_cloud_run_v2_service.deployment]
+}
+
+resource "google_cloud_run_v2_service_iam_policy" "web_noauth" {
+  location = google_cloud_run_v2_service.web_deployment.location
+  project  = google_cloud_run_v2_service.web_deployment.project
+  name     = google_cloud_run_v2_service.web_deployment.name
+  policy_data = jsonencode({
+    bindings = [
+      {
+        role    = "roles/run.invoker"
+        members = ["allUsers"]
+      }
+    ]
+  })
+  depends_on = [google_cloud_run_v2_service.web_deployment]
 }

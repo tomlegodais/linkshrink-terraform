@@ -18,6 +18,11 @@ variable "service_version" {
   type        = string
 }
 
+variable "web_app_version" {
+  description = "The version of the web app to deploy"
+  type        = string
+}
+
 variable "subnet_cidr" {
   description = "The subnet CIDR for the VPC"
   type        = string

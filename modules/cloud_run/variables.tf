@@ -18,8 +18,13 @@ variable "name" {
   type        = string
 }
 
-variable "dockerimage" {
-  description = "The deployment docker image URL"
+variable "service_dockerimage" {
+  description = "The Docker image of the service to deploy"
+  type        = string
+}
+
+variable "web_app_dockerimage" {
+  description = "The Docker image of the web app to deploy"
   type        = string
 }
 

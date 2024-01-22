@@ -34,13 +34,14 @@ module "memorystore" {
 }
 
 module "cloud_run" {
-  source        = "./modules/cloud_run"
-  name          = "linkshrink-service"
-  region        = var.region
-  project_id    = var.project_id
-  environment   = var.environment
-  dockerimage   = local.dockerimage.service_url
-  vpc_connector = module.vpc_network.vpc_connector
+  source              = "./modules/cloud_run"
+  name                = "linkshrink"
+  region              = var.region
+  project_id          = var.project_id
+  environment         = var.environment
+  service_dockerimage = local.dockerimage.service_url
+  web_app_dockerimage = local.dockerimage.web_app_url
+  vpc_connector       = module.vpc_network.vpc_connector
   postgres_db = {
     host               = module.cloud_sql.database_host
     name               = module.cloud_sql.database_name

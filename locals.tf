@@ -8,5 +8,6 @@ locals {
   }
   dockerimage = {
     service_url = "${var.region}-docker.pkg.dev/${var.project_id}/linkshrink-service/linkshrink:${var.service_version}"
+    web_app_url = "${var.region}-docker.pkg.dev/${var.project_id}/linkshrink-web-app/linkshrink:${var.web_app_version}"
   }
 }
