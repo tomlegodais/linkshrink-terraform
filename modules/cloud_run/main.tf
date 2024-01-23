@@ -69,6 +69,18 @@ resource "google_cloud_run_v2_service_iam_policy" "noauth" {
   depends_on = [google_cloud_run_v2_service.deployment]
 }
 
+resource "google_cloud_run_domain_mapping" "api_domain_mapping" {
+  location = var.region
+  name     = var.environment != "prod" ? "${var.environment}.api.lshr.ink" : "api.lshr.ink"
+  metadata {
+    namespace = var.project_id
+  }
+  spec {
+    route_name = google_cloud_run_v2_service.deployment.name
+  }
+  depends_on = [google_cloud_run_v2_service.deployment]
+}
+
 resource "google_cloud_run_v2_service" "web_deployment" {
   name     = "${var.name}-web-${var.environment}"
   location = var.region
@@ -112,5 +124,17 @@ resource "google_cloud_run_v2_service_iam_policy" "web_noauth" {
       }
     ]
   })
+  depends_on = [google_cloud_run_v2_service.web_deployment]
+}
+
+resource "google_cloud_run_domain_mapping" "web_domain_mapping" {
+  location = var.region
+  name     = var.environment != "prod" ? "${var.environment}.lshr.ink" : "lshr.ink"
+  metadata {
+    namespace = var.project_id
+  }
+  spec {
+    route_name = google_cloud_run_v2_service.web_deployment.name
+  }
   depends_on = [google_cloud_run_v2_service.web_deployment]
 }
